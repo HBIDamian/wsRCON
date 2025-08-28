@@ -94,7 +94,7 @@ class Main extends PluginBase {
         $resourcePath = $this->getResourcePath("config.yml");
         
         // Read the original template from resources
-        if ($resourcePath !== null && file_exists($resourcePath)) {
+        if (file_exists($resourcePath)) {
             $template = file_get_contents($resourcePath);
             
             // Replace the default password with the new secure password
@@ -185,29 +185,6 @@ class Main extends PluginBase {
     public function broadcastServerMessage(string $message, string $type = 'INFO', string $source = 'SERVER'): void {
         $formattedMessage = "§7[{$source}] {$message}";
         $this->broadcast($formattedMessage);
-    }
-    
-    private function broadcastConsoleMessage(string $message, string $level = 'INFO'): void {
-        if ($this->connectionManager->getConnectionCount() === 0) {
-            return;
-        }
-        
-        $consoleData = [
-            'type' => 'console',
-            'timestamp' => date('H:i:s'),
-            'message' => $message,
-            'level' => $level
-        ];
-        
-        $jsonMessage = json_encode($consoleData);
-        
-        foreach ($this->connectionManager->getAllConnections() as $clientId => $connection) {
-            if (isset($connection['authenticated']) && $connection['authenticated']) {
-                $this->frameHandler->sendRawMessage($connection['socket'], $jsonMessage);
-            }
-        }
-        
-        $this->debugLog("Broadcasted console message to " . $this->connectionManager->getConnectionCount() . " clients: " . substr($message, 0, 50) . "...");
     }
     
     private function registerCommands(): void {

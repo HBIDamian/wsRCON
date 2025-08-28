@@ -59,7 +59,7 @@ class WebSocketCommandSender implements CommandSender {
     }
     
     public function addAttachment(\pocketmine\plugin\Plugin $plugin, ?string $name = null, ?bool $value = null): \pocketmine\permission\PermissionAttachment {
-        return new \pocketmine\permission\PermissionAttachment($plugin, $this);
+        return new \pocketmine\permission\PermissionAttachment($plugin);
     }
     
     public function removeAttachment(\pocketmine\permission\PermissionAttachment $attachment): void {
@@ -79,7 +79,9 @@ class WebSocketCommandSender implements CommandSender {
     }
     
     public function getPermissionRecalculationCallbacks(): \pocketmine\utils\ObjectSet {
-        return new \pocketmine\utils\ObjectSet();
+        /** @var \pocketmine\utils\ObjectSet<\Closure(array<string, bool>): void> $callbacks */
+        $callbacks = new \pocketmine\utils\ObjectSet();
+        return $callbacks;
     }
     
     public function getLanguage(): \pocketmine\lang\Language {

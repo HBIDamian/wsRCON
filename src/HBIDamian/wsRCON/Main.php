@@ -83,7 +83,6 @@ class Main extends PluginBase {
         // Generate a secure random password if using default or empty password
         if ($currentPassword === 'change_this_password_123' || empty($currentPassword)) {
             $securePassword = base64_encode(random_bytes(13));
-            $this->config->set('websocket-password', $securePassword);
             $this->saveConfigWithFormatting($securePassword);
             $this->getLogger()->info("Generated secure WebSocket password in the config.yml file.");
         }
@@ -91,30 +90,30 @@ class Main extends PluginBase {
     
     private function saveConfigWithFormatting(string $newPassword): void {
         $configPath = $this->getDataFolder() . "config.yml";
-        $resourcePath = $this->getResourcePath("config.yml");
         
-        // Read the original template from resources
-        if (file_exists($resourcePath)) {
-            $template = file_get_contents($resourcePath);
+        // Read the current config file (which should have the nice formatting from saveDefaultConfig)
+        if (file_exists($configPath)) {
+            $configContent = file_get_contents($configPath);
             
             // Replace the default password with the new secure password
             $updatedConfig = str_replace(
                 'websocket-password: "change_this_password_123"',
                 'websocket-password: "' . $newPassword . '"',
-                $template
+                $configContent
             );
             
-            // Write the formatted config to the data folder
+            // Write the updated config back, preserving all formatting
             file_put_contents($configPath, $updatedConfig);
             
-            $this->debugLog("Config saved with preserved formatting using template from resources");
+            // Update the in-memory config object to reflect the change
+            $this->config->set('websocket-password', $newPassword);
         } else {
-            // Fallback to regular config save if template is not available
-            $this->config->save();
-            $this->debugLog("Fallback: Config saved using standard method (template not found)");
+            // Fallback: save default config first, then try again
+            $this->saveDefaultConfig();
+            $this->saveConfigWithFormatting($newPassword);
         }
     }
-    
+        
     private function logSecurityInfo(): void {
         $password = $this->config->get('websocket-password', '');
         $port = $this->getWebSocketPort();

@@ -78,10 +78,12 @@ class WebSocketCommandSender implements CommandSender {
         return true;
     }
     
+    /**
+     * @return \pocketmine\utils\ObjectSet
+     * @phpstan-return \pocketmine\utils\ObjectSet<\Closure(array<string, bool>): void>
+     */
     public function getPermissionRecalculationCallbacks(): \pocketmine\utils\ObjectSet {
-        /** @var \pocketmine\utils\ObjectSet<\Closure(array<string, bool>): void> $callbacks */
-        $callbacks = new \pocketmine\utils\ObjectSet();
-        return $callbacks;
+        return new \pocketmine\utils\ObjectSet();
     }
     
     public function getLanguage(): \pocketmine\lang\Language {

@@ -14,6 +14,13 @@ A complete WebSocket implementation for remote server console access with **zero
 - 🔧 **Pure PHP** - No external libraries or Composer packages required
 
 
+## Online interface:
+
+I've made an interface for this plugin, that can be found over at [https://hbidamian.github.io/wsRCON/](https://hbidamian.github.io/wsRCON/).
+
+If you want to self host your own interface, you can grab it from [https://github.com/HBIDamian/wsRCON/tree/webconsole](https://github.com/HBIDamian/wsRCON/tree/webconsole)
+
+
 ## ⚙️ Configuration
 
 After the first startup, the plugin will create a config file at:

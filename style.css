@@ -1,0 +1,58 @@
+/* Minimal custom styles for features not covered by Tailwind */
+
+/* Modal styles */
+.hidden {
+    display: none !important;
+}
+
+/* Status indicator animations */
+.status-disconnected #status-indicator {
+    animation: pulse 2s infinite;
+}
+
+.status-connected #status-indicator {
+    background-color: #4ade80 !important;
+    animation: none;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Custom scrollbar styling for better dark theme integration */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: #0d1117;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .desktop-sidebar {
+        width: 100% !important;
+        max-height: 300px;
+        order: 1; /* Sidebar appears first */
+    }
+    
+    .mobile-main {
+        flex-direction: column;
+    }
+    
+    .console-container-mobile {
+        flex: 1;
+        min-height: 0;
+        order: 2; /* Console appears after sidebar */
+    }
+}

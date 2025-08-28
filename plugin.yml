@@ -1,7 +1,0 @@
-name: wsRCON
-version: 1.0.0
-api: [5.0.0]
-main: HBIDamian\wsRCON\Main
-author: HBIDamian
-description: WebSocket remote console for PocketMine (an RCON Alternative)
-website: https://github.com/hbidamian/wsRCON

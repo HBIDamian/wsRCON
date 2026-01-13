@@ -13,6 +13,7 @@ class PocketMineConsole {
             pocketmineHost: '',
             pocketminePort: '',
             pocketminePassword: '',
+            pocketmineProtocol: 'ws',
             maxConsoleLines: 1000
         };
         
@@ -43,8 +44,14 @@ class PocketMineConsole {
                 this.socket.close();
             }
             
-            const wsUrl = `ws://${this.config.pocketmineHost}:${this.config.pocketminePort}`;
+            const protocol = this.config.pocketmineProtocol || 'ws';
+            const wsUrl = `${protocol}://${this.config.pocketmineHost}:${this.config.pocketminePort}`;
             this.addConsoleMessage('SYSTEM', `Connecting to ${wsUrl}...`, 'welcome');
+            
+            // Warn about mixed content
+            if (window.location.protocol === 'https:' && protocol === 'ws') {
+                this.addConsoleMessage('WARNING', 'Attempting insecure WebSocket (ws://) from HTTPS page. This may be blocked by your browser. If it does, you may need to self-host the page on a non-HTTPS site until support has been added to the wsRCON Plugin.', 'error');
+            }
             
             this.socket = new WebSocket(wsUrl);
             
@@ -195,6 +202,7 @@ class PocketMineConsole {
             pocketmineHost: '',
             pocketminePort: '',
             pocketminePassword: '',
+            pocketmineProtocol: 'ws',
             maxConsoleLines: 1000
         };
         
@@ -355,7 +363,16 @@ class PocketMineConsole {
             modalSubtext.className = 'text-github-text-muted text-sm text-center mb-4';
         }
         
+        // Show HTTPS warning if needed
+        const httpsWarning = document.getElementById('modal-https-warning');
+        if (window.location.protocol === 'https:') {
+            httpsWarning.classList.remove('hidden');
+        } else {
+            httpsWarning.classList.add('hidden');
+        }
+        
         // Load saved values or defaults
+        document.getElementById('modal-protocol-select').value = this.config.pocketmineProtocol || 'ws';
         document.getElementById('modal-host-input').value = this.config.pocketmineHost || '';
         document.getElementById('modal-port-input').value = this.config.pocketminePort || '';
         document.getElementById('modal-password-input').value = this.config.pocketminePassword || '';
@@ -370,6 +387,7 @@ class PocketMineConsole {
     }
 
     handleModalConnect() {
+        const protocol = document.getElementById('modal-protocol-select').value;
         const host = document.getElementById('modal-host-input').value.trim();
         const port = parseInt(document.getElementById('modal-port-input').value);
         const password = document.getElementById('modal-password-input').value;
@@ -385,6 +403,7 @@ class PocketMineConsole {
         }
 
         // Update configuration
+        this.config.pocketmineProtocol = protocol;
         this.config.pocketmineHost = host;
         this.config.pocketminePort = port;
         this.config.pocketminePassword = password;

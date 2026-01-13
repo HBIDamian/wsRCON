@@ -37,7 +37,17 @@
         <div class="bg-github-dark-3 border border-github-border rounded-lg p-6 w-96 max-w-full mx-4">
             <h2 class="text-xl text-green-400 mb-2 text-center">🎮 Connect to PocketMine Server</h2>
             <p class="text-github-text-muted text-sm text-center mb-4">Enter your server details to connect</p>
+            <div id="modal-https-warning" class="hidden bg-yellow-900 border border-yellow-600 text-yellow-200 p-3 rounded text-xs mb-4">
+                ⚠️ You're on HTTPS. Use <strong>wss://</strong> for secure connections, or your server must support SSL/TLS. If your server only supports <strong>ws://</strong>, you may need to access this page via HTTP.
+            </div>
             <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-2">
+                    <label for="modal-protocol-select" class="text-github-text-muted text-sm">Protocol:</label>
+                    <select id="modal-protocol-select" class="bg-github-dark border border-github-border text-github-text p-3 rounded font-mono text-sm focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400 focus:ring-opacity-20">
+                        <option value="ws">ws:// (insecure)</option>
+                        <option value="wss">wss:// (secure/SSL)</option>
+                    </select>
+                </div>
                 <div class="flex flex-col gap-2">
                     <label for="modal-host-input" class="text-github-text-muted text-sm">Host:</label>
                     <input type="text" id="modal-host-input" placeholder="e.g. play.example.com" value=""

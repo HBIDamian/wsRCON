@@ -754,5 +754,5 @@ class PocketMineConsole {
 
 // Initialize the console when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    window.console = new PocketMineConsole();
+    window.rconConsole = new PocketMineConsole();
 });
